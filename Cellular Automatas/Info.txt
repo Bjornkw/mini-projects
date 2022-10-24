@@ -1,0 +1,4 @@
+Some cool automata rules:
+
+280223046658140715940755211939830641857
+4 states, 1 neighbour

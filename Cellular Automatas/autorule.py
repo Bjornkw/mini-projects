@@ -36,8 +36,7 @@ class Rule:
         return 'poop'
         
     def __str__(self):
-        
-        return 'cum'
+        return int(self.num, self.c)
     
     def new_rule(self, nr):
         if nr == 'rand':
@@ -62,9 +61,9 @@ class Rule:
 ###############################################################################
 
 
-r = Rule(3,1)    
+r = Rule(4,1)    
 plt.figure(dpi=400)
 fig = plt.imshow(r.canvas, cmap='rainbow')
 fig.axes.get_xaxis().set_visible(False)
 fig.axes.get_yaxis().set_visible(False)
-plt.title("Rule " + str(int(r.num, r.c)))
+#plt.title("Rule " + str(int(r.num, r.c)))
