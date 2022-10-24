@@ -8,8 +8,6 @@ Created on Fri Oct 21 02:12:22 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
-canvas = np.zeros([256,256])
-
 ###############################################################################
 
 def numberToBase(n, b):
@@ -36,7 +34,7 @@ class Rule:
         return 'poop'
         
     def __str__(self):
-        return int(self.num, self.c)
+        return str(int(self.num, self.c))
     
     def new_rule(self, nr):
         if nr == 'rand':
@@ -60,10 +58,11 @@ class Rule:
         
 ###############################################################################
 
-
-r = Rule(4,1)    
-plt.figure(dpi=400)
-fig = plt.imshow(r.canvas, cmap='rainbow')
-fig.axes.get_xaxis().set_visible(False)
-fig.axes.get_yaxis().set_visible(False)
-#plt.title("Rule " + str(int(r.num, r.c)))
+if __name__ == "__main__":
+    r = Rule(5,1)
+    print(r)
+    plt.figure(dpi=400)
+    fig = plt.imshow(r.canvas, cmap='rainbow')
+    fig.axes.get_xaxis().set_visible(False)
+    fig.axes.get_yaxis().set_visible(False)
+    #plt.title("Rule " + str(int(r.num, r.c)))
