@@ -6,7 +6,8 @@ Created on Fri Oct 21 02:12:22 2022
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
 
 ###############################################################################
 
@@ -24,17 +25,15 @@ def numberToBase(n, b):
 class Rule:
     def __init__(self, c=2, n=1, size=[256, 256],  nr='rand'):
         self.size = size
+        self.canvas = np.zeros([self.size[0], self.size[1]])
         self.c = c
         self.n = n
         self.new_rule(nr)
-        self.paint()
+        self.paint_canvas()
         self.num = "".join([str(self.rule[i]) for i in range(len(self.rule))])
         
-    def __repr__(self):
-        return 'poop'
-        
     def __str__(self):
-        return str(int(self.num, self.c))
+        return "Rule object: Classes = " + str(self.c) + ", Neighbours = " +str(self.n) + "\n" + str(int(self.num, self.c))
     
     def new_rule(self, nr):
         if nr == 'rand':
@@ -44,18 +43,20 @@ class Rule:
         elif type(nr) != int:
             raise Exception('nr is not a number!')
             
+    def paint_line(self, prev_line):
+        line = np.zeros(len(prev_line))
+        for i in range(self.n, len(prev_line)-self.n):
+            query = "".join([str(prev_line[i+q])[0] for q in range(-self.n, self.n+1)])
+            line[i] = self.rule[-1-int(query, self.c)]
+        return line
     
-    def paint(self, title=True):
-        self.canvas = np.zeros([self.size[0], self.size[1]])
+    def paint_canvas(self, title=True):
         for i in range(len(self.canvas[0])):
             self.canvas[0,i] = np.random.randint(0, self.c)
         
         for i in range(len(self.canvas[0])-1):
-            for j in range(self.n ,len(self.canvas[0])-self.n):
-                query = "".join([str(self.canvas[i,j+q])[0] for q in range(-self.n, self.n+1)])
-                self.canvas[i+1,j] = self.rule[-1-int(query, self.c)]
+            self.canvas[i+1,:] = self.paint_line(self.canvas[i,:])
                 
-        
 ###############################################################################
 
 if __name__ == "__main__":

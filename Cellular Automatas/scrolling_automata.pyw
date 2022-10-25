@@ -8,11 +8,14 @@ Created on Sat Oct 22 21:42:18 2022
 import pygame
 import numpy as np
 import time
-
-
+import autorule as ar
+import matplotlib as mpl
 
 class Viewer:
     def __init__(self, update_func, display_size):
+        self.rule = ar.Rule(2,1, [5,5])
+        self.cmap_g = mpl.colormaps["Greys"]
+        self.cmap_r = mpl.colormaps["rainbow"]
         self.update_func = update_func
         pygame.init()
         self.display = pygame.display.set_mode(display_size)
