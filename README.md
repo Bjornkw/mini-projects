@@ -1,3 +1,2 @@
 # mini-projects
-A collection of small python project created over the years
-
+A collection of random small python projects
