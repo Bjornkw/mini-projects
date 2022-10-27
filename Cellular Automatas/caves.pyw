@@ -43,7 +43,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     size = [64, 64]
     c = Canvas(size, 0.55)
-    c.iterate(30)
+    c.iterate(10)
     plt.figure(dpi=200)
     img = c.canvas*(-1)+1
     fig = plt.imshow(img, cmap='Greys')

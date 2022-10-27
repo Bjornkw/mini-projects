@@ -22,7 +22,7 @@ if __name__ == "__main__":
     # Generate the level first
     print("Generating level")
     level = levelgenerator.Level(display_size)
-    level.generate_level(40)
+    level.generate_level(10)
     level_map = level.level
     level_map = np.repeat(np.repeat(level_map, scale, axis=0), scale, axis=1)
     surf = pg.surfarray.make_surface(level_map)

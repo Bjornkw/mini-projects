@@ -12,7 +12,7 @@ import caves
 ###############################################################################
 
 class Level():
-    def __init__(self, size = [256, 256], rule = 1587796918111, noise_level=0.55):
+    def __init__(self, size = [256, 256], rule = 1587796918111, noise_level=0.57):
         self.size = size
         self.rule = rule
         self.noise_level = noise_level
@@ -25,7 +25,7 @@ class Level():
         cavegen.fill_noise(self.noise_level)
         cavegen.iterate(n)
         img = cavegen.canvas*(-1)+1
-        step = 2
+        step = 1
         img[step:self.size[1]] = 2*img[step:self.size[1]] + img[0:self.size[1]-step] - img[step:self.size[1]]*img[0:self.size[1]-step]
         img[0:step] = 2
         self.level = img
@@ -40,7 +40,7 @@ class Level():
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     level = Level([64, 64])
-    level.generate_level(40)
+    level.generate_level(10)
     print(level)
     plt.figure(dpi=400)
     fig = plt.imshow(level.level, cmap='Greys')
