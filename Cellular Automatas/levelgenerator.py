@@ -12,9 +12,9 @@ import caves
 ###############################################################################
 
 class Level():
-    def __init__(self, size = [256, 256], rule = 67, noise_level=0.55):
+    def __init__(self, size = [256, 256], rule = 1587796918111, noise_level=0.55):
         self.size = size
-        self.rule = 67
+        self.rule = rule
         self.noise_level = noise_level
         
     def __str__(self):
@@ -33,7 +33,7 @@ class Level():
         self.generate_floor()
     
     def generate_floor(self):
-        rule = autorule.Rule(2,1,self.size,self.rule)
+        rule = autorule.Rule(3,1,self.size,self.rule)
         floor = rule.canvas
         self.level = self.level + floor*(self.level_mask*(-1)+1)*0.2+0.1
 

@@ -59,7 +59,7 @@ class Rule:
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    r = Rule(2,1,[128, 128], )
+    r = Rule(3,1,[128, 128],3847458745940)
     print(r)
     plt.figure(dpi=400)
     fig = plt.imshow(r.canvas, cmap='Greys')
