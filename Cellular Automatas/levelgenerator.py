@@ -12,17 +12,17 @@ import caves
 ###############################################################################
 
 class Level():
-    def __init__(self, size = [256, 256], rule = 67):
+    def __init__(self, size = [256, 256], rule = 67, noise_level=0.55):
         self.size = size
         self.rule = 67
-        self.noise_level = 0.5
+        self.noise_level = noise_level
         
     def __str__(self):
         return "Filled"*('level' in dir(self)) + "Empty"*(not 'level' in dir(self)) + " Level Object"
         
     def generate_level(self, n=5):
         cavegen = caves.Canvas(self.size)
-        cavegen.fill_noise()
+        cavegen.fill_noise(self.noise_level)
         cavegen.iterate(n)
         img = cavegen.canvas*(-1)+1
         step = 2

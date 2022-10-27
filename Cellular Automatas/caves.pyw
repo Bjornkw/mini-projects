@@ -10,12 +10,13 @@ import numpy as np
 ###############################################################################
 
 class Canvas():
-    def __init__(self, size):
+    def __init__(self, size, noise_level = 0.5):
         self.size = size
-        self.fill_noise()
+        self.fill_noise(noise_level)
     
-    def fill_noise(self):
-        self.canvas = np.random.randint(0, 2, [self.size[0], self.size[1]])
+    def fill_noise(self, noise_level):
+        self.canvas = np.random.random([self.size[0], self.size[1]])
+        self.canvas = (self.canvas<noise_level)*1
     
     def iterate(self, n):
         for s in range(n):
@@ -41,7 +42,7 @@ class Canvas():
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     size = [64, 64]
-    c = Canvas(size)
+    c = Canvas(size, 0.55)
     c.iterate(30)
     plt.figure(dpi=200)
     img = c.canvas*(-1)+1
