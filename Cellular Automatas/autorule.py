@@ -6,8 +6,6 @@ Created on Fri Oct 21 02:12:22 2022
 """
 
 import numpy as np
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
 
 ###############################################################################
 
@@ -60,10 +58,11 @@ class Rule:
 ###############################################################################
 
 if __name__ == "__main__":
-    r = Rule(5,1)
+    import matplotlib.pyplot as plt
+    r = Rule(2,1,[128, 128], )
     print(r)
     plt.figure(dpi=400)
-    fig = plt.imshow(r.canvas, cmap='rainbow')
+    fig = plt.imshow(r.canvas, cmap='Greys')
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
     #plt.title("Rule " + str(int(r.num, r.c)))

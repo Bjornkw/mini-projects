@@ -6,7 +6,8 @@ Created on Fri Oct 21 01:29:10 2022
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
+    
+###############################################################################
 
 class Canvas():
     def __init__(self, size):
@@ -35,10 +36,15 @@ class Canvas():
 
             self.canvas = np.copy(canvas_tmp)
 
-size = [64, 64]
-c = Canvas(size)
-c.iterate(30)
-plt.figure(dpi=200)
-fig = plt.imshow(c.canvas*(-1)+1, cmap='Greys')
-fig.axes.get_xaxis().set_visible(False)
-fig.axes.get_yaxis().set_visible(False)
+###############################################################################
+
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    size = [64, 64]
+    c = Canvas(size)
+    c.iterate(30)
+    plt.figure(dpi=200)
+    img = c.canvas*(-1)+1
+    fig = plt.imshow(img, cmap='Greys')
+    fig.axes.get_xaxis().set_visible(False)
+    fig.axes.get_yaxis().set_visible(False)
