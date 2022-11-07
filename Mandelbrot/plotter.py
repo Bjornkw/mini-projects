@@ -79,8 +79,8 @@ ti.init(arch=ti.gpu)
 win_size_s = [1920, 1080]
 center = [-0.908445250432262, -0.2676926298264956]
 pixels_s = ti.field(dtype=ti.float64, shape=(win_size_s[0], win_size_s[1]))
-scale=1
-itr_lim_s = 5000
+scale=0.0000236000184180249
+itr_lim_s = 25000
 
 ###############################################################################
 
@@ -112,12 +112,12 @@ def paint_fancy(s: ti.float64, c1: ti.float64, c2: ti.float64):
 
 ###############################################################################
 
-def save_frame(d):
+def save_frame(d, q):
     print('Saving frame ' + str(saved_frames)+"/"+str(max_frames))
     paint_fancy(d[0], d[1], d[2])
     image = np.zeros((win_size_s[1], win_size_s[0], 3), dtype=np.uint8)
     itr = pixels_s.to_numpy(dtype=np.float64)
-    itr_mod = np.mod(itr, 64)
+    itr_mod = np.mod(itr+q, 64)
     for i in range(win_size_s[1]):
         for j in range(win_size_s[0]):
             if itr[j, i] == itr_lim_s:
@@ -135,11 +135,11 @@ def save_frame(d):
 if __name__=="__main__":
     i = 0
     saved_frames = 0
-    max_frames=250
+    max_frames=64
     for i in range(max_frames):
         saved_frames = i
-        save_frame([scale, center[0], center[1]])
-        scale = scale/1.05
+        save_frame([scale, center[0], center[1]], i)
+        i=i+1
     print('Done!')
 
     
