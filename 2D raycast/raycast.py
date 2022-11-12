@@ -7,17 +7,17 @@ Created on Mon Nov  7 19:34:50 2022
 
 import numpy as np
 from numpy import genfromtxt
+from numba import jit, njit, prange
 import pygame as pg
 
 #------------------------------------------------------------------------------
 
 win_size = [320, 240]
-
-#------------------------------------------------------------------------------
-
 level = genfromtxt('level.csv', delimiter=',')
 level = level*(-1) +1
+c_palett = {"white": (0,0,0), "red": (1,0,0)}
 
+#------------------------------------------------------------------------------
 
 class Character():
     def __init__(self):
@@ -26,7 +26,7 @@ class Character():
         self.phi = 0
         
     def move(self, r):
-        ds = 0.2*r
+        ds = 0.5*r
         new_x = self.x + ds*np.cos(self.phi)
         new_y = self.y + ds*np.sin(self.phi)
         if level[int(new_x), int(new_y)]==0:
@@ -37,29 +37,35 @@ class Character():
         
 #------------------------------------------------------------------------------
 
-def CastRay(x, y, phi):
-    stepsize=0.4
+@jit
+def CastRay(x, y, phi, s):
+    stepsize=s
     max_steps=128
-    for i in range(max_steps):
+    for i in prange(1, max_steps):
         x = x + np.cos(phi)*stepsize
         y = y + np.sin(phi)*stepsize
         if level[int(x), int(y)]==1:
             break
     return i, level[int(x),int(y)]
 
-def Draw(x, y, phi):
-    frame = np.zeros([win_size[0], win_size[1], 3])
-    FoV = 1     # Radians
+@jit
+def Draw(x, y, phi, s, W, H):
+    FoV = 2     # Radians
+    frame = np.zeros((W, H, 3))
     
     rays = []
-    for i in range(win_size[0]):
-        ray_angle = phi - 0.5*FoV + ((i+1)/win_size[0])*FoV
-        rays.append(CastRay(x, y, ray_angle))
+    for i in prange(W):
+        ray_angle = phi - 0.5*FoV + ((i+1)/W)*FoV
+        rays.append(CastRay(x, y, ray_angle, s))
         
-    for i in range(len(rays)):
+    for i in prange(len(rays)):
         dist = rays[i][0]
-        a = int(dist)
-        frame[i, a:(win_size[1]-a),0] = 10/(dist+0.01)
+        mat = rays[i][1]
+        s_fac = int(H/dist)*(1/s)
+        a = int((H-s_fac)/2)
+        b = int((s_fac+H)/2)
+        frame[i, a:b, :] = 10/dist
+        
     return frame
 
 #------------------------------------------------------------------------------
@@ -84,7 +90,9 @@ if __name__ == "__main__":
             if event.type == pg.QUIT:
                 RUNNING = False
         
-        frame = Draw(char.x, char.y, char.phi)*255.0
+        W = win_size[0]
+        H = win_size[1]
+        frame = Draw(char.x, char.y, char.phi, 0.2, W, H)*255.0
         frame = frame.repeat(2,axis=0).repeat(2,axis=1)
         surf = pg.surfarray.make_surface(frame)
         display.blit(surf, (0, 0))
