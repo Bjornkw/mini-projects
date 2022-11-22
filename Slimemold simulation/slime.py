@@ -11,7 +11,7 @@ from PIL import Image
 
 ti.init(arch=ti.gpu)
 
-win_size = [500, 500]
+win_size = [1000, 1000]
 center = [int(win_size[0]/2), int(win_size[0]/2)]
 pixels = ti.field(dtype=float, shape=(win_size[0], win_size[1]))
 
