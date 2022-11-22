@@ -80,8 +80,6 @@ def paint_fancy(s: ti.float64, c1: ti.float64, c2: ti.float64):
             
         pixels_s[i, j] = itr
 
-gui = ti.GUI("Mandelbrot fractal", res=(win_size[0], win_size[1]))
-
 ###############################################################################
 
 def save_frame(d):
@@ -106,6 +104,7 @@ def save_frame(d):
 ###############################################################################
 
 if __name__=="__main__":
+    gui = ti.GUI("Mandelbrot fractal", res=(win_size[0], win_size[1]))
     while gui.running:
         paint(scale, center[0], center[1])
         gui.set_image(pixels)
