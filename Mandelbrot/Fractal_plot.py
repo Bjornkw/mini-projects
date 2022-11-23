@@ -57,8 +57,6 @@ def paint(s: float, c1: float, c2: float):
             
         pixels[i, j] = 1 - ti.sqrt(ti.sqrt(itr/itr_lim))
 
-gui = ti.GUI("Mandelbrot fractal", res=(win_size[0], win_size[1]))
-
 @ti.kernel
 def paint_fancy(s: ti.float64, c1: ti.float64, c2: ti.float64):
     for i, j in pixels_s:
