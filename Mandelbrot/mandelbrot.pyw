@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Mandelbrot renderer, real-time
-Use mouse buttons to zoom in/out
+Use mouse wheel to zoom in/out, and LMB to move
 
 Created on Wed Aug 19 22:11:51 2021
 
@@ -97,27 +97,49 @@ def save_frame(d):
     image = Image.fromarray(image, 'RGB')
     image.save("fractal.png")
     print('Done!')
+    
+def scr2z(i, j, scale, center):
+    x_min = center[0] - scale
+    x_max = center[0] + scale
+    y_min = center[1] - scale
+    y_max = center[1] + scale
+    x = x_min + (x_max-x_min)*(2*i)
+    y = y_min + (y_max-y_min)*j
+    return x, y
 
 
 ###############################################################################
 
 if __name__=="__main__":
     gui = ti.GUI("Mandelbrot fractal", res=(win_size[0], win_size[1]))
+    mouse_x, mouse_y = 0, 0
+    track = False
     while gui.running:
+        mouse_x_old, mouse_y_old = mouse_x, mouse_y
+        mouse_x, mouse_y = gui.get_cursor_pos()
         paint(scale, center[0], center[1])
         gui.set_image(pixels)
         gui.show()
-    
-        if gui.get_event(ti.GUI.PRESS):
         
-            if gui.event.key == "LMB":
-                mouse_x, mouse_y = gui.get_cursor_pos()
-                center=[center[0] + (mouse_x -0.5)*scale, center[1] + (mouse_y -0.5)*(win_size[1]/win_size[0])*scale]
-                scale = scale/1.3
-            elif gui.event.key =="RMB":
-                mouse_x, mouse_y = gui.get_cursor_pos()
-                center=[center[0] + (mouse_x -0.5)*scale, center[1] + (mouse_y -0.5)*(win_size[1]/win_size[0])*scale]
-                scale = scale*1.3
-            elif gui.event.key == "Control_L":
+        if track:
+            a, b = scr2z(mouse_x, mouse_y, scale, center)
+            c, d = scr2z(mouse_x_old, mouse_y_old, scale, center)
+            center[0]=center[0]-a+c
+            center[1]=center[1]-b+d
+    
+        if gui.get_event():
+            if gui.event.key == "Wheel":
+                if gui.event.delta[1] > 0:
+                    scale = scale/1.3
+                else:
+                    scale = scale*1.3
+                    
+            if gui.event.key == "Control_L":
                 save_frame([scale, center[0], center[1]])
+                
+            if gui.event.key == "LMB":
+                if gui.event.type == ti.GUI.PRESS:
+                    track = True
+                if gui.event.type == ti.GUI.RELEASE:
+                    track = False
             

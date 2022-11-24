@@ -4,8 +4,8 @@ Created on Wed Nov 23 00:23:11 2022
 
 Explore the Julia sets of the Mandelbrot fractal!
 Scrollwheel to zoom
-RMB to move
-LMB to move marker
+LMB to move
+RMB to place marker
 
 @author: Björn Krook Willén
 """
@@ -86,7 +86,10 @@ if __name__=="__main__":
     pos = np.array([[0.25,0.5]])
     idx = np.random.randint(1, 2, size=(1,))
     gui = ti.GUI("Mandelbrot fractal and corresponding julia fractals", res=(win_size*2, win_size))
+    track, track_j = False, False
+    mouse_x, mouse_y = 0, 0
     while gui.running:
+        mouse_x_old, mouse_y_old = mouse_x, mouse_y
         mouse_x, mouse_y = gui.get_cursor_pos()
         p1, p2 = scr2z(pos[0,0], pos[0,1], scale, center)
         paint(scale, center[0], center[1], scale_j, center_j[0], center_j[1], p1, p2)
@@ -95,9 +98,23 @@ if __name__=="__main__":
             gui.circles(pos, radius=5, palette=[0x068587, 0xED553B, 0xEEEEF0], palette_indices=idx)
         gui.show()
         
+        if track:
+            a, b = scr2z(mouse_x, mouse_y, scale, center)
+            c, d = scr2z(mouse_x_old, mouse_y_old, scale, center)
+            center[0]=center[0]-a+c
+            center[1]=center[1]-b+d
+            pos[0,0] = pos[0,0]+mouse_x-mouse_x_old
+            pos[0,1] = pos[0,1]+mouse_y-mouse_y_old
+            
+        if track_j:
+            a, b = scr2z(mouse_x, mouse_y, scale, center)
+            c, d = scr2z(mouse_x_old, mouse_y_old, scale, center)
+            center_j[0]=center_j[0]-a+c
+            center_j[1]=center_j[1]-b+d
+        
         if gui.get_event():
             if mouse_x < 0.5:
-                if gui.event.key == "LMB":
+                if gui.event.key == "RMB":
                     if gui.event.type == ti.GUI.PRESS:
                         pos[0,0] = mouse_x
                         pos[0,1] = mouse_y 
@@ -110,21 +127,19 @@ if __name__=="__main__":
                         scale = scale/1.1
                         pos[0,0] = 0.25+(pos[0,0]-0.25)*1.1
                         pos[0,1] = 0.5+(pos[0,1]-0.5)*1.1
-                if gui.event.key == "RMB":
+                if gui.event.key == "LMB":
                     if gui.event.type == ti.GUI.PRESS:
-                        a, b = scr2z(mouse_x, mouse_y, scale, center)
-                        center[0]=a
-                        center[1]=b
-                        pos[0,0] = pos[0,0]-mouse_x+0.25
-                        pos[0,1] = pos[0,1]-mouse_y+0.5
+                        track = True
+                    if gui.event.type == ti.GUI.RELEASE:
+                        track = False
             else:
                 if gui.event.key == "Wheel":
                     if gui.event.delta[1] < 0:
                         scale_j = scale_j*1.1
                     else:
                         scale_j = scale_j/1.1
-                if gui.event.key == "RMB":
+                if gui.event.key == "LMB":
                     if gui.event.type == ti.GUI.PRESS:
-                        a, b = scr2z(mouse_x-0.5, mouse_y, scale_j, center_j)
-                        center_j[0]=a
-                        center_j[1]=b
+                        track_j = True
+                    if gui.event.type == ti.GUI.RELEASE:
+                        track_j = False
