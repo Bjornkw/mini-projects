@@ -101,16 +101,16 @@ if __name__=="__main__":
         if track:
             a, b = scr2z(mouse_x, mouse_y, scale, center)
             c, d = scr2z(mouse_x_old, mouse_y_old, scale, center)
-            center[0]=center[0]-a+c
-            center[1]=center[1]-b+d
+            center[0]=center[0]+(c-a)
+            center[1]=center[1]+(d-b)
             pos[0,0] = pos[0,0]+mouse_x-mouse_x_old
             pos[0,1] = pos[0,1]+mouse_y-mouse_y_old
             
         if track_j:
-            a, b = scr2z(mouse_x, mouse_y, scale, center)
-            c, d = scr2z(mouse_x_old, mouse_y_old, scale, center)
-            center_j[0]=center_j[0]-a+c
-            center_j[1]=center_j[1]-b+d
+            a, b = scr2z(mouse_x, mouse_y, scale_j, center_j)
+            c, d = scr2z(mouse_x_old, mouse_y_old, scale_j, center_j)
+            center_j[0]=center_j[0]+(c-a)
+            center_j[1]=center_j[1]+(d-b)
         
         if gui.get_event():
             if mouse_x < 0.5:

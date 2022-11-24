@@ -124,8 +124,8 @@ if __name__=="__main__":
         if track:
             a, b = scr2z(mouse_x, mouse_y, scale, center)
             c, d = scr2z(mouse_x_old, mouse_y_old, scale, center)
-            center[0]=center[0]-a+c
-            center[1]=center[1]-b+d
+            center[0]=center[0]+(c-a)/2
+            center[1]=center[1]+(d-b)/(win_size[0]/win_size[1])
     
         if gui.get_event():
             if gui.event.key == "Wheel":
