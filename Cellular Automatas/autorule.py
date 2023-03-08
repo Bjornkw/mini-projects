@@ -6,6 +6,7 @@ Created on Fri Oct 21 02:12:22 2022
 """
 
 import numpy as np
+import time
 
 ###############################################################################
 
@@ -59,10 +60,13 @@ class Rule:
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    r = Rule(3,1,[128, 128],3847458745940)
+    start = time.time()
+    r = Rule(5,1,[128, 128])
+    end = time.time()
     print(r)
+    print(str(end-start)+" seconds")
     plt.figure(dpi=400)
-    fig = plt.imshow(r.canvas, cmap='Greys')
+    fig = plt.imshow(r.canvas, cmap='rainbow')
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
     #plt.title("Rule " + str(int(r.num, r.c)))
